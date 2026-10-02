@@ -1,0 +1,1145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Submit Your Startup Idea</title>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f6f8fb;
+    color: #111827;
+}
+
+.container {
+    max-width: 620px;
+    margin: auto;
+    padding: 25px 18px 50px;
+}
+
+/* Header */
+
+.header {
+    text-align: center;
+    margin: 20px 0 28px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+.logo span {
+    color: #2563eb;
+}
+
+.header h1 {
+    font-size: 32px;
+    line-height: 1.15;
+    margin-bottom: 12px;
+}
+
+.header p {
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* Card */
+
+.card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 10px 35px rgba(0,0,0,.07);
+}
+
+/* Progress */
+
+.progress {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 28px;
+}
+
+.progress span {
+    height: 4px;
+    flex: 1;
+    background: #e5e7eb;
+    border-radius: 20px;
+}
+
+.progress span.active {
+    background: #2563eb;
+}
+
+/* Steps */
+
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+.step-number {
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+.step h2 {
+    font-size: 23px;
+    margin-bottom: 20px;
+}
+
+.field {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+input,
+textarea {
+    width: 100%;
+    border: 1px solid #d8dee8;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 15px;
+    outline: none;
+    transition: .2s;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+}
+
+textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+/* Gender */
+
+.gender {
+    display: flex;
+    gap: 10px;
+}
+
+.gender label {
+    flex: 1;
+}
+
+.gender input {
+    display: none;
+}
+
+.gender-box {
+    display: block;
+    padding: 14px 8px;
+    text-align: center;
+    border: 1px solid #d8dee8;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.gender input:checked + .gender-box {
+    color: #2563eb;
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+/* Buttons */
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.next {
+    width: 100%;
+    background: #2563eb;
+    color: white;
+}
+
+.back {
+    background: #eef2f7;
+    color: #334155;
+}
+
+/* Payment */
+
+.payment-box {
+    margin-top: 22px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 13px;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+}
+
+.payment-label {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.price {
+    font-size: 34px;
+    font-weight: 800;
+    margin: 7px 0;
+}
+
+.pay-button {
+    width: 100%;
+    margin-top: 16px;
+    background: #111827;
+    color: white;
+    font-size: 16px;
+}
+
+.note {
+    margin-top: 15px;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* Success */
+
+.success {
+    display: none;
+    text-align: center;
+    padding: 25px 10px;
+}
+
+.success-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #16a34a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.success h2 {
+    margin-bottom: 10px;
+}
+
+.success p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* Mobile */
+
+@media(max-width: 480px) {
+
+    .container {
+        padding: 18px 14px 40px;
+    }
+
+    .card {
+        padding: 21px;
+    }
+
+    .header h1 {
+        font-size: 27px;
+    }
+
+    .gender {
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="logo">
+            Idea<span>Launch</span>
+        </div>
+
+        <h1>
+            Have a Startup Idea?
+        </h1>
+
+        <p>
+            Your idea could be the beginning of something meaningful.
+            Tell us about it in just 5 simple steps.
+        </p>
+
+    </div>
+
+
+    <!-- CARD -->
+
+    <div class="card">
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress">
+
+            <span class="active"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form id="startupForm">
+
+
+            <!-- STEP 1 -->
+
+            <div class="step active">
+
+                <div class="step-number">
+                    STEP 1 OF 5
+                </div>
+
+                <h2>
+                    What's your first name?
+                </h2>
+
+                <div class="field">
+
+                    <label>
+                        First Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your first name"
+                        required
+                        maxlength="100"
+                    >
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="next"
+                        onclick="nextStep()"
+                    >
+                        Continue →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 2 -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    STEP 2 OF 5
+                </div>
+
+                <h2>
+                    Select your gender
+                </h2>
+
+                <div class="field">
+
+                    <div class="gender">
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="Male"
+                                required
+                            >
+
+                            <span class="gender-box">
+                                Male
+                            </span>
+
+                        </label>
+
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="Female"
+                            >
+
+                            <span class="gender-box">
+                                Female
+                            </span>
+
+                        </label>
+
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="Other"
+                            >
+
+                            <span class="gender-box">
+                                Other
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="back"
+                        onclick="prevStep()"
+                    >
+                        ← Back
+                    </button>
+
+                    <button
+                        type="button"
+                        class="next"
+                        onclick="nextStep()"
+                    >
+                        Continue →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 3 -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    STEP 3 OF 5
+                </div>
+
+                <h2>
+                    Where are you based?
+                </h2>
+
+                <div class="field">
+
+                    <label>
+                        Address
+                    </label>
+
+                    <input
+                        type="text"
+                        id="address"
+                        placeholder="Enter your city / address"
+                        required
+                        maxlength="300"
+                    >
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="back"
+                        onclick="prevStep()"
+                    >
+                        ← Back
+                    </button>
+
+                    <button
+                        type="button"
+                        class="next"
+                        onclick="nextStep()"
+                    >
+                        Continue →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 4 -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    STEP 4 OF 5
+                </div>
+
+                <h2>
+                    How can we contact you?
+                </h2>
+
+                <div class="field">
+
+                    <label>
+                        Mobile Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="mobile"
+                        placeholder="Enter 10-digit mobile number"
+                        maxlength="10"
+                        pattern="[0-9]{10}"
+                        inputmode="numeric"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="back"
+                        onclick="prevStep()"
+                    >
+                        ← Back
+                    </button>
+
+                    <button
+                        type="button"
+                        class="next"
+                        onclick="nextStep()"
+                    >
+                        Continue →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 5 -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    STEP 5 OF 5
+                </div>
+
+                <h2>
+                    Tell us your startup idea
+                </h2>
+
+
+                <div class="field">
+
+                    <label>
+                        Your Startup Idea
+                    </label>
+
+                    <textarea
+                        id="idea"
+                        placeholder="Explain your idea, the problem it solves, who it helps and how it could work..."
+                        minlength="10"
+                        maxlength="10000"
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- PAYMENT -->
+
+                <div class="">
+
+                    <div class="payment-label">
+                        
+                    </div>
+
+                    <div class="price">
+                        
+                    </div>
+
+                    <div class="payment-label">
+                        <!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Submit Your Startup Idea</title>
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f6f8fb;
+    color: #111827;
+}
+
+.container {
+    max-width: 620px;
+    margin: auto;
+    padding: 25px 18px 50px;
+}
+
+/* Header */
+
+.header {
+    text-align: center;
+    margin: 20px 0 28px;
+}
+
+.logo {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+.logo span {
+    color: #2563eb;
+}
+
+.header h1 {
+    font-size: 32px;
+    line-height: 1.15;
+    margin-bottom: 12px;
+}
+
+.header p {
+    color: #64748b;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* Card */
+
+.card {
+    background: #fff;
+    border-radius: 18px;
+    padding: 28px;
+    box-shadow: 0 10px 35px rgba(0,0,0,.07);
+}
+
+/* Progress */
+
+.progress {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 28px;
+}
+
+.progress span {
+    height: 4px;
+    flex: 1;
+    background: #e5e7eb;
+    border-radius: 20px;
+}
+
+.progress span.active {
+    background: #2563eb;
+}
+
+/* Steps */
+
+.step {
+    display: none;
+}
+
+.step.active {
+    display: block;
+}
+
+.step-number {
+    color: #2563eb;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 7px;
+}
+
+.step h2 {
+    font-size: 23px;
+    margin-bottom: 20px;
+}
+
+.field {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+input,
+textarea {
+    width: 100%;
+    border: 1px solid #d8dee8;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 15px;
+    outline: none;
+    transition: .2s;
+}
+
+input:focus,
+textarea:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.1);
+}
+
+textarea {
+    min-height: 160px;
+    resize: vertical;
+}
+
+/* Gender */
+
+.gender {
+    display: flex;
+    gap: 10px;
+}
+
+.gender label {
+    flex: 1;
+}
+
+.gender input {
+    display: none;
+}
+
+.gender-box {
+    display: block;
+    padding: 14px 8px;
+    text-align: center;
+    border: 1px solid #d8dee8;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.gender input:checked + .gender-box {
+    color: #2563eb;
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+/* Buttons */
+
+.buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+button {
+    border: none;
+    border-radius: 10px;
+    padding: 14px 18px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+button:disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+.next {
+    width: 100%;
+    background: #2563eb;
+    color: white;
+}
+
+.back {
+    background: #eef2f7;
+    color: #334155;
+}
+
+/* Payment */
+
+.payment-box {
+    margin-top: 22px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 13px;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+}
+
+.payment-label {
+    color: #64748b;
+    font-size: 13px;
+}
+
+.price {
+    font-size: 34px;
+    font-weight: 800;
+    margin: 7px 0;
+}
+
+.pay-button {
+    width: 100%;
+    margin-top: 16px;
+    background: #111827;
+    color: white;
+    font-size: 16px;
+}
+
+.note {
+    margin-top: 15px;
+    color: #64748b;
+    font-size: 12px;
+    line-height: 1.6;
+    text-align: center;
+}
+
+/* Success */
+
+.success {
+    display: none;
+    text-align: center;
+    padding: 25px 10px;
+}
+
+.success-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: #dcfce7;
+    color: #16a34a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+.success h2 {
+    margin-bottom: 10px;
+}
+
+.success p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* Mobile */
+
+@media(max-width: 480px) {
+
+    .container {
+        padding: 18px 14px 40px;
+    }
+
+    .card {
+        padding: 21px;
+    }
+
+    .header h1 {
+        font-size: 27px;
+    }
+
+    .gender {
+        flex-direction: column;
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="logo">
+            Idea<span>Launch</span>
+        </div>
+
+        <h1>
+            Have a Startup Idea?
+        </h1>
+
+        <p>
+            Your idea could be the beginning of something meaningful.
+            Tell us about it in just 5 simple steps.
+        </p>
+
+    </div>
+
+
+    <!-- CARD -->
+
+    <div class="card">
+
+
+        <!-- PROGRESS -->
+
+        <div class="progress">
+
+            <span class="active"></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+
+        </div>
+
+
+        <!-- FORM -->
+
+        <form id="startupForm">
+
+
+            <!-- STEP 1 -->
+
+            <div class="step active">
+
+                <div class="step-number">
+                    STEP 1 OF 5
+                </div>
+
+                <h2>
+                    What's your first name?
+                </h2>
+
+                <div class="field">
+
+                    <label>
+                        First Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder="Enter your first name"
+                        required
+                        maxlength="100"
+                    >
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="next"
+                        onclick="nextStep()"
+                    >
+                        Continue →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 2 -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    STEP 2 OF 5
+                </div>
+
+                <h2>
+                    Select your gender
+                </h2>
+
+                <div class="field">
+
+                    <div class="gender">
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="Male"
+                                required
+                            >
+
+                            <span class="gender-box">
+                                Male
+                            </span>
+
+                        </label>
+
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="Female"
+                            >
+
+                            <span class="gender-box">
+                                Female
+                            </span>
+
+                        </label>
+
+
+                        <label>
+
+                            <input
+                                type="radio"
+                                name="gender"
+                                value="Other"
+                            >
+
+                            <span class="gender-box">
+                                Other
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+                <div class="buttons">
+
+                    <button
+                        type="button"
+                        class="back"
+                        onclick="prevStep()"
+                    >
+                        ← Back
+                    </button>
+
+                    <button
+                        type="button"
+                        class="next"
+                        onclick="nextStep()"
+                    >
+                        Continue →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 3 -->
+
+            <div class="step">
+
+                <div class="step-number">
+                    STEP 3 OF 5
+                </div>
+
+                <h2>
+                    Where are you based?
+                </h2>
+
+                <div class="field">
+
+                    <label>
+                        Address
+                    </label>
+
+                    <input
+                        type="text"
+                        id="address"
+          
